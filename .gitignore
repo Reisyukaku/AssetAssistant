@@ -1,0 +1,6 @@
+AssetAssistant/bin/*
+AssetAssistant/obj/*
+AssetAssistant/.vs/*
+Example/bin/*
+Example/obj/*
+Example/.vs/*
