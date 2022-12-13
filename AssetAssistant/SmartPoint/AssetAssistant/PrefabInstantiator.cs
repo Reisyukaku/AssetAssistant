@@ -10,7 +10,15 @@ namespace SmartPoint.AssetAssistant
 
         public void Restore()
         {
-            //
+            if (prefab) {
+                var instantiatedObject = Instantiate(prefab, transform.parent);
+                if (instantiatedObject != null) {
+                    instantiatedObject.name = prefab.name;
+                    instantiatedObject.transform.localPosition = transform.localPosition;
+                    instantiatedObject.transform.localScale = transform.localScale;
+                    instantiatedObject.transform.localRotation = transform.localRotation;
+                }
+            }
         }
 
         [SceneRestoreOperationMethod]

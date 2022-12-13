@@ -102,19 +102,21 @@ namespace SmartPoint.AssetAssistant
 
         public override int Release() 
         {
-            base.Release();
-            if (referencedCount >= 0 && referencedCount != 1) {
+            if (referencedCount == 1) {
                 _unloadAllLoadedObjects = false;
                 return referencedCount;
             }
             Debug.Log("Unload asset-bundle:" + _record.assetBundleName);
             _record = null;
-            assetBundle.Unload(_unloadAllLoadedObjects);
-            //TODO: still some missing stuff
+            if (assetBundle != null) {
+                assetBundle.Unload(_unloadAllLoadedObjects);
+                assetBundle = null;
+            }
+            referencedCount--;
             return referencedCount;
         }
 
-        public static bool Contains(string assetBundleName, bool includeNotLoaded = false) //TODO: figure out how to use includeNotLoaded
+        public static bool Contains(string assetBundleName, bool includeNotLoaded = false)
         { 
             AssetBundleCache c = null;
             if(!string.IsNullOrEmpty(assetBundleName)) 
@@ -164,8 +166,10 @@ namespace SmartPoint.AssetAssistant
         {
             foreach(var c in _container)
             {
-               //TODO
+               c.Value.Unload(false);
             }
+            
+            _container.Clear();
         }
     }
 }
