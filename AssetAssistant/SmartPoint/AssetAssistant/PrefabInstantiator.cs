@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SmartPoint.AssetAssistant
 {
@@ -11,7 +12,7 @@ namespace SmartPoint.AssetAssistant
         public void Restore()
         {
             if (prefab) {
-                var instantiatedObject = Instantiate(prefab, transform.parent);
+                GameObject instantiatedObject = (GameObject)Instantiate(prefab, transform.parent);
                 if (instantiatedObject != null) {
                     instantiatedObject.name = prefab.name;
                     instantiatedObject.transform.localPosition = transform.localPosition;
@@ -24,9 +25,5 @@ namespace SmartPoint.AssetAssistant
         [SceneRestoreOperationMethod]
         private IEnumerator RestoreOperation(SceneEntity entity) => (IEnumerator) null;
 
-        public PrefabInstantiator()
-        {
-            //
-        }
     }
 }

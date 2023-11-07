@@ -1,132 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!--Project was exported from assembly: C:\Users\Rei\Desktop\cpp2il_out\AssetAssistant.dll-->
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B19CA85C-9BB1-42DE-B1F0-8B74BEB6691B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AssemblyName>AssetAssistant</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-    <ApplicationVersion>0.0.0.0</ApplicationVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System">
-      <HintPath>lib\System.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core">
-      <HintPath>lib\System.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.ValueTuple.4.5.0\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\cpp2il_out\UnityEngine.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>lib\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>..\lib\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>lib\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>lib\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\lib\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>lib\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>..\lib\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="SmartPoint\Mathematics\Matrix4x4Ext.cs" />
-    <Compile Include="SmartPoint\Mathematics\QuaternionExt.cs" />
-    <Compile Include="SmartPoint\Mathematics\FastMath.cs" />
-    <Compile Include="SmartPoint\Mathematics\FloatExt.cs" />
-    <Compile Include="SmartPoint\Mathematics\Vector2Ext.cs" />
-    <Compile Include="SmartPoint\Mathematics\Vector3Ext.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetAssistantInitializeMethodAttribute.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetManagerAfferSetupMethodAttribute.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SceneRestoreOperationMethodAttribute.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SceneCloseOperationMethodAttribute.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SceneBeforeActivateOperationMethodAttribute.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SceneDeactivatedOperationMethodAttribute.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundleInstantiator.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundleCache.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\RecordedHash.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundleRecord.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundleDownloadManifest.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundlePackHeader.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundlePackNode.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundleMemory.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetManager.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\RefCounted.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\RequestEventCallback.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\RequestItemPacket.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\RequestStatus.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\RequestEventType.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\IAssetRequestItem.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\InstallRequestItem.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundleRequestItem.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetRequestItem.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetRequestOperation.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\InstallHandler.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\StreamExtensions.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\IgnoreVersionBinder.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\Serializer.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\IUnityEditorProxy.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\PermanentHolder.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\PrefabInstantiator.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SceneBrowser.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SceneDatabase.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SceneEntity.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SequenceMonoBehaviour.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\IViewportChangeHandler.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\LogMessage.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\Sequencer.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SingletonMonoBehaviour.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\SingletonScriptableObject.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\PreloadRequest.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\AssetBundleTarget.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\ReferenceObject.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\StartupSettings.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\Pair.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\ArrayHelper.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\GameObjectExtension.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\StringExtensions.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\TransformExtensions.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\FloatBits.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\StringContainer.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\SerializedMethod.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\Reflection.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\UnityExtensions\SectionCounter.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\Forms\MessageBoxResult.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\Forms\MessageBoxButtons.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\Forms\MessageBox.cs" />
-    <Compile Include="SmartPoint\AssetAssistant\Forms\MessageBoxManifestBase.cs" />
-    <Compile Include="AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SmartPoint.AssetAssistant
 {

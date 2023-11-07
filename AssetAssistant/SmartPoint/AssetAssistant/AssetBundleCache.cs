@@ -1,6 +1,6 @@
 ﻿using SmartPoint.AssetAssistant.UnityExtensions;
-using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SmartPoint.AssetAssistant
 {
@@ -166,7 +166,7 @@ namespace SmartPoint.AssetAssistant
         {
             foreach(var c in _container)
             {
-               c.Value.Unload(false);
+                c.Value.assetBundle.Unload(true);
             }
             
             _container.Clear();
