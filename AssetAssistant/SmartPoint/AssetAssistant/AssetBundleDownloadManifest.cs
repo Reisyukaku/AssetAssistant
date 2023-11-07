@@ -1,8 +1,4 @@
 ﻿using SmartPoint.AssetAssistant.UnityExtensions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -21,61 +17,25 @@ namespace SmartPoint.AssetAssistant
 
         [SerializeField]
         private AssetBundleRecord[] _records;
-     
+
         [SerializeField]
         private string[] _assetBundleNamesWithVariant;
-       
-        [NonSerialized]
+
         private Dictionary<string, HashSet<string>> _variantMap;
-       
-        [NonSerialized]
         private Dictionary<string, AssetBundleRecord> _recordLookupFromAssetBundleName;
-      
-        [NonSerialized]
         private Dictionary<string, AssetBundleRecord> _recordLookupFromAssetPath;
-      
-        [NonSerialized]
         private bool _dirty;
-       
-        [NonSerialized]
         private string _path;
-        
-        [NonSerialized]
         private AssetBundleDownloadManifest _latest;
 
-        public delegate void OnRecordCreated(AssetBundleRecord record);
-
-        public string projectName
-        {
-            get => _projectName;
-            set => _projectName = value;
-        }
-
-        public string path
-        {
-            get => _path;
-            set => _path = value;
-        }
-
-        public AssetBundleDownloadManifest latest
-        {
-            get => _latest;
-            set => _latest = value;
-        }
-
-        public int recordCount
-        {
-            get => _records.Length;
-        }
-
-        public AssetBundleRecord[] records
-        {
-            get => _records;
-        }
-
+        public string projectName { get => _projectName; set => _projectName = value; }
+        public string path { get => _path; set => _path = value; }
+        public AssetBundleDownloadManifest latest { get => _latest; set => _latest = value; }
+        public int recordCount { get => _records.Length; }
+        public AssetBundleRecord[] records { get => _records; }
         public long totalSize
         {
-            get 
+            get
             {
                 long size = 0;
                 foreach (var r in _recordLookupFromAssetBundleName)
@@ -90,25 +50,28 @@ namespace SmartPoint.AssetAssistant
             {
                 long size = 0;
                 foreach (var r in _recordLookupFromAssetBundleName)
-                    if(r.Value.isBeginInstalled) size += r.Value.size;
+                    if (r.Value.isBeginInstalled) size += r.Value.size;
                 return size;
             }
         }
 
         public int installCount
         {
-            get {
+            get
+            {
                 int cnt = 0;
-                foreach (var r in _records) cnt += r.isBeginInstalled ? 1 : 0;
+                foreach (var r in records) cnt += r.isBeginInstalled ? 1 : 0;
                 return cnt;
             }
         }
 
         public AssetBundleRecord[] installAssetBundleRecords
         {
-            get {
+            get
+            {
                 int latest = 0;
-                foreach (var r in records) {
+                foreach (var r in records)
+                {
                     if (r.latest != null) latest++;
                 }
                 //TODO
@@ -116,6 +79,7 @@ namespace SmartPoint.AssetAssistant
             }
         }
 
+       
         public static AssetBundleDownloadManifest Load(byte[] data) {
             return (AssetBundleDownloadManifest)new MemoryStream(data).DeserializeBinaryFormatter();
         }
@@ -154,11 +118,13 @@ namespace SmartPoint.AssetAssistant
             return ret;
         }
 
-        public string[] GetDependencies(string assetBundleName) => _records.Where(x => x.assetBundleName == assetBundleName).FirstOrDefault().allDependencies;
+        public delegate void OnRecordCreated(AssetBundleRecord record);
+
+        public string[] GetDependencies(string assetBundleName) => records.Where(x => x.assetBundleName == assetBundleName).FirstOrDefault().allDependencies;
 
         private void LoadFromAssetBundleManifest(string targetPath, AssetBundleManifest other, OnRecordCreated callback)
         {
-            _projectName = Path.GetFileNameWithoutExtension(targetPath);
+            projectName = Path.GetFileNameWithoutExtension(targetPath);
             other.GetAllAssetBundles();
             other.GetAllAssetBundlesWithVariant();
 
@@ -184,9 +150,9 @@ namespace SmartPoint.AssetAssistant
         public AssetBundleDownloadManifest()
         {
             _version = currentVersion;
-            _projectName = string.Empty;
+            projectName = string.Empty;
             _assetBundleNamesWithVariant = ArrayHelper.Empty<string>();
-            _path = string.Empty;
+            path = string.Empty;
             _records = ArrayHelper.Empty<AssetBundleRecord>();
             _recordLookupFromAssetBundleName = new Dictionary<string, AssetBundleRecord>();
             _dirty = false;
@@ -194,16 +160,20 @@ namespace SmartPoint.AssetAssistant
 
         public void Append(string projectName, AssetBundleDownloadManifest appendManifest)
         {
-            //TODO
+            throw new NotImplementedException();
         }
 
         private void MarkDifference(AssetBundleDownloadManifest latestManifest)
         {
+            throw new NotImplementedException();
         }
 
         private void BuildLookupTables()
         {
-
+            _recordLookupFromAssetBundleName = _records.ToDictionary(x => x.assetBundleName);
+            //_recordLookupFromAssetPath = ;
+            _variantMap = new Dictionary<string, HashSet<string>>();
+            //TODO
         }
 
         public AssetBundleRecord AddRecord(string projectName, string assetBundleName) => (AssetBundleRecord) null;
@@ -215,30 +185,40 @@ namespace SmartPoint.AssetAssistant
             _variantMap?.Clear();
             _recordLookupFromAssetPath = null;
             _version = 6;
-            MarkDifference(_latest);
+            MarkDifference(latest);
         }
 
         public bool IsExist(string assetBundleName) => _recordLookupFromAssetBundleName.ContainsKey(assetBundleName);
 
-        public string[] GetExists(string[] assetBundleNames) {
-            return null;
+        public string[] GetExists(string[] assetBundleNames)
+        {
+            throw new NotImplementedException();
         }
 
         public void RemoveRecords(string[] assetBundleNames)
         {
-
+            throw new NotImplementedException();
         }
 
         public void RestrictRecords(string[] assetBundleNames)
         {
-
+            throw new NotImplementedException();
         }
 
-        public string[] GetAllAssetBundleNames() => (string[]) null;
+        public string[] GetAllAssetBundleNames()
+        {
+            throw new NotImplementedException();
+        }
 
-        public string[] GetAssetBundleNamesWithVariant() => (string[]) null;
+        public string[] GetAssetBundleNamesWithVariant()
+        {
+            throw new NotImplementedException();
+        }
 
-        public string FindMatchAssetBundleNameWithVariants(string assetBundleName, string[] variants) => (string) null;
+        public string FindMatchAssetBundleNameWithVariants(string assetBundleName, string[] variants)
+        {
+            throw new NotImplementedException();
+        }
 
         public string GetAssetBundleNameAtPath(string path) {
             AssetBundleRecord rec = null;

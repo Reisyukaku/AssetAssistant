@@ -8,74 +8,33 @@ namespace SmartPoint.AssetAssistant
 {
     public class SceneEntity : RefCounted
     {
-        private SceneDatabase.SceneProperty _property;
-        private Scene _scene;
-        private bool _isRequested;
-        private bool _isLoaded;
-        private GameObject _suspendObject;
-        private SceneEntity[] _includes;
-        private Dictionary<MonoBehaviour, Queue<Operation>> _activateOperations;
-
-        public SceneEntity(string sceneName) : base()
+        private class Operation
         {
-            includes = ArrayHelper.Empty<SceneEntity>();
-            _activateOperations = new Dictionary<MonoBehaviour, Queue<Operation>>();
-            SceneDatabase.SceneProperty prop;
-            SceneDatabase.GetAllSceneProperty().TryGetValue(sceneName, out prop);
-            _property = prop;
+            public MonoBehaviour behaviour;
+            public MethodInfo method;
+            public Coroutine coroutine;
         }
 
-        public string path
-        {
-            get => _property.scenePath;
-        }
+        private Dictionary<MonoBehaviour, Queue<SceneEntity.Operation>> _activateOperations;
 
-        public SceneDatabase.SceneProperty property
-        {
-            get => _property;
-        }
-
-        public GameObject cluster
-        {
-            get => _suspendObject;
-        }
-
-        public SceneEntity[] includes
-        {
-            get => _includes; 
-            set => _includes = value;
-        }
-
-        public bool isRequested
-        {
-            get => _isRequested;
-            set => _isRequested = value;
-        }
-
-        public Transform clusterRootTransform
-        {
-            get => _suspendObject.transform;
-        }
-
-        public bool isLoaded
-        {
-            get => _isLoaded;
-            set => _isLoaded = value;
-        }
-
-        public MonoBehaviour[] FindScripts() {
-            //TODO:
-            return null;
-        }
-
+        public string path { get; }
+        public SceneDatabase.SceneProperty property { get; }
+        public GameObject cluster { get; }
+        public SceneEntity[] includes { get; set; }
+        public bool isRequested { get; set; }
+        public Transform clusterRootTransform { get; }
+        public bool isLoaded { get; set; }
         public bool isActivatable
         {
-            get {
-                if (_includes.Length < 1) 
+            get
+            {
+                if (includes.Length < 1)
                     return CanActivate();
                 bool ret = false;
-                foreach (var i in _includes) {
-                    if (i.CanActivate()) {
+                foreach (var i in includes)
+                {
+                    if (i.CanActivate())
+                    {
                         ret = true;
                         break;
                     }
@@ -85,7 +44,41 @@ namespace SmartPoint.AssetAssistant
             }
         }
 
-        private bool CanActivate() => new bool();
+        public SceneEntity(string sceneName) : base()
+        {
+            includes = ArrayHelper.Empty<SceneEntity>();
+            _activateOperations = new Dictionary<MonoBehaviour, Queue<Operation>>();
+            SceneDatabase.SceneProperty prop;
+            SceneDatabase.GetAllSceneProperty().TryGetValue(sceneName, out prop);
+            property = prop;
+        }
+
+        public MonoBehaviour[] FindScripts() {
+            //TODO:
+            return null;
+        }
+
+        private bool CanActivate()
+        {
+            if (!isLoaded)
+                return false;
+
+            if (_activateOperations.Count >= 1)
+            {
+                foreach (var actOp in _activateOperations)
+                {
+                    var currVal = actOp.Value;
+                    foreach (var val in currVal)
+                    {
+                        if (Sequencer.IsFinished(val.coroutine)) break;
+                    }
+                    currVal.Dequeue();
+                    //TODO
+                }
+            }
+
+            return _activateOperations.Count == 0;
+        }
 
         private bool CanDeactivate() => new bool();
 
@@ -93,22 +86,12 @@ namespace SmartPoint.AssetAssistant
 
         public void Suspend()
         {
+            throw new NotImplementedException();
         }
 
         public void Resume()
         {
-        }
-
-        private class Operation
-        {
-            public MonoBehaviour behaviour;
-            public MethodInfo method;
-            public Coroutine coroutine;
-
-            public Operation()
-            {
-                //
-            }
+            throw new NotImplementedException();
         }
     }
 }

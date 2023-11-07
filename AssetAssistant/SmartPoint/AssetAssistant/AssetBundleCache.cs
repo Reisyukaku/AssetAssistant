@@ -1,4 +1,5 @@
 ﻿using SmartPoint.AssetAssistant.UnityExtensions;
+using System.ComponentModel;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -6,88 +7,49 @@ namespace SmartPoint.AssetAssistant
 {
     public class AssetBundleCache : RefCounted
     {
-        private static Dictionary<string, AssetBundleCache> _container;
-        private AssetBundleRecord _record;
-        private AssetBundle _assetBundle;
-        private bool _isLoaded;
-        private string[] _variants;
-        private Object[] _loadedAssets;
-        private bool _unloadAllLoadedObjects;
-        private string[] _remapDependencies;
+        private static Dictionary<string, AssetBundleCache> container { get; set; }
+        private bool unloadAllLoadedObjects { get; set; }
 
-        public Object loadedFirstAsset
-        {
-            get => loadedAssets[0];
-        }
-
-        public Object[] loadedAssets
-        {
-            get => _loadedAssets;
-            set => _loadedAssets = value;
-        }
-
-        public string[] variants
-        {
-            get => _variants;
-        }
-
-        public string[] remapDependencies
-        {
-            get => _remapDependencies;
-        }
+        public Object loadedFirstAsset => loadedAssets[0];
+        public Object[] loadedAssets { get; set; }
+        public string[] variants { get; }
+        public string[] remapDependencies { get;  }
 
         public bool allLoaded
         {
             get {
                 bool ret = false;
-                if (_loadedAssets.Length < 1)
+                if (loadedAssets.Length < 1)
                     ret = true;
                 else {
                     int i = 0;
-                    for (i = 0; i < _loadedAssets.Length; i++)
+                    for (i = 0; i < loadedAssets.Length; i++)
                     {
-                        if (_loadedAssets[i] != null) break;
+                        if (loadedAssets[i] != null) break;
                     }
-                    if (i == _loadedAssets.Length - 1) ret = true;
+                    if (i == loadedAssets.Length - 1) ret = true;
                 }
                 return ret;
             }
         }
 
-        public AssetBundleRecord record
-        {
-            get => _record;
-            set => _record = value;
-
-        }
-
-        public AssetBundle assetBundle
-        {
-            get => _assetBundle;
-            set => _assetBundle = value;
-
-        }
-
-        public bool isLoaded
-        {
-            get => _isLoaded;
-            set => _isLoaded = value;
-
-        }
+        public AssetBundleRecord record { get; set; }
+        public AssetBundle assetBundle { get; set; }
+        public bool isLoaded { get; set; }
 
         public bool canLoadAsset
         {
             get {
                 bool ret = false;
                 int i = 0;
-                foreach (string d in _remapDependencies) {
+                foreach (string d in remapDependencies) {
                     
                     if (!string.IsNullOrEmpty(d)) {
                         AssetBundleCache cache;
-                        var val = _container.TryGetValue(d, out cache);
+                        var val = container.TryGetValue(d, out cache);
                         if (!val || cache == null) break;
                     }
-                    if (++i >= _remapDependencies.Length)
+                    if (++i >= remapDependencies.Length)
                         ret = true;
                 }
                 return ret;
@@ -96,20 +58,20 @@ namespace SmartPoint.AssetAssistant
 
         private AssetBundleCache() : base()
         {
-            _loadedAssets = ArrayHelper.Empty<Object>();
-            _container = new Dictionary<string, AssetBundleCache>();
+            loadedAssets = ArrayHelper.Empty<Object>();
+            container = new Dictionary<string, AssetBundleCache>();
         }
 
         public override int Release() 
         {
             if (referencedCount == 1) {
-                _unloadAllLoadedObjects = false;
+                unloadAllLoadedObjects = false;
                 return referencedCount;
             }
-            Debug.Log("Unload asset-bundle:" + _record.assetBundleName);
-            _record = null;
+            Debug.Log("Unload asset-bundle:" + record.assetBundleName);
+            record = null;
             if (assetBundle != null) {
-                assetBundle.Unload(_unloadAllLoadedObjects);
+                assetBundle.Unload(unloadAllLoadedObjects);
                 assetBundle = null;
             }
             referencedCount--;
@@ -120,7 +82,7 @@ namespace SmartPoint.AssetAssistant
         { 
             AssetBundleCache c = null;
             if(!string.IsNullOrEmpty(assetBundleName)) 
-                _container.TryGetValue(assetBundleName, out c);
+                container.TryGetValue(assetBundleName, out c);
             return c != null;
         }
 
@@ -137,13 +99,13 @@ namespace SmartPoint.AssetAssistant
         public static int ReleaseFromAssetBundleChache(AssetBundleCache cache, bool unloadAllLoadedObjects = false)
         {
             int ret = 0;
-            foreach (var dep in cache._record.allDependencies)
+            foreach (var dep in cache.record.allDependencies)
             {
                 AssetBundleCache c;
                 if (!string.IsNullOrEmpty(dep))
                 {
-                    if (_container.TryGetValue(dep, out c)) {
-                        c._unloadAllLoadedObjects = unloadAllLoadedObjects;
+                    if (container.TryGetValue(dep, out c)) {
+                        c.unloadAllLoadedObjects = unloadAllLoadedObjects;
                         c.Release();
                     }
                 }
@@ -155,7 +117,7 @@ namespace SmartPoint.AssetAssistant
         {
             int ret = 0;
             AssetBundleCache c;
-            if (_container.TryGetValue(assetBundleName, out c)) {
+            if (container.TryGetValue(assetBundleName, out c)) {
                 ret = ReleaseFromAssetBundleChache(c, unloadAllLoadedObjects);
             }
 
@@ -164,12 +126,12 @@ namespace SmartPoint.AssetAssistant
 
         public static void Destroy()
         {
-            foreach(var c in _container)
+            foreach(var c in container)
             {
                 c.Value.assetBundle.Unload(true);
             }
             
-            _container.Clear();
+            container.Clear();
         }
     }
 }

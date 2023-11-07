@@ -9,16 +9,7 @@
             Second = second;
         }
 
-        public T First
-        {
-            get => First;
-            set => First = value;
-        }
-
-        public U Second
-        {
-            get => Second;
-            set => Second = value;
-        }
+        public T First { get; set; }
+        public U Second { get; set; }
     }
 }

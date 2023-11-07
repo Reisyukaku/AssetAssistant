@@ -23,7 +23,10 @@ namespace SmartPoint.AssetAssistant
         }
 
         [SceneRestoreOperationMethod]
-        private IEnumerator RestoreOperation(SceneEntity entity) => (IEnumerator) null;
+        private IEnumerator RestoreOperation(SceneEntity entity)
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }
